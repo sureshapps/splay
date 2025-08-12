@@ -1,0 +1,828 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,700,0,0" />
+
+    <style>
+        :root {
+            --accent-color: rgb(255, 123, 0);
+            --primary-bg: rgba(0, 0, 0, 0.5);
+            --primary-border: 1px solid #ffffff35;
+            --primary-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+            --secondary-bg: rgba(241, 241, 241, 0.09);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('https://raw.githubusercontent.com/navaneet239/temp-files/main/RipenWaves.jpg');
+            background-size: cover;
+            color: white;
+            backdrop-filter: blur(45px) brightness(80%);
+            font-size: 16px;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        button {
+            color: white;
+            background-color: var(--accent-color);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border: var(--primary-border);
+            transition: all 0.5s;
+        }
+
+        a {
+            color: var(--accent-color);
+        }
+
+        .slider {
+            -moz-appearance: none;
+            appearance: none;
+            -webkit-appearance: none;
+            width: 95%;
+            height: 7px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        /* Ranger Styling */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            border: 3px solid white;
+            -webkit-transition: border 0.05s, scale 0.3s;
+            transition: border 0.05s, scale 0.3s;
+            scale: 1;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            border: 2px solid white;
+            scale: 1.1;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #04aa6d;
+        }
+
+        .searchT {
+            width: calc(27vw - 70.85px);
+            height: 30px;
+            border: var(--primary-border);
+            border-radius: 5px;
+            background-color: var(--secondary-bg);
+            padding: 10px;
+            font-size: 13.5px;
+            color: white;
+            text-align: left;
+            transition: all 0.5s;
+            margin-bottom: 1px;
+            padding-right: 30px;
+        }
+
+        .playerCont {
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        .playerList {
+            display: flex;
+            width: 100%;
+            gap: 10px;
+            align-items: center;
+            padding: 12.5px 17.5px;
+            border-radius: 5px;
+        }
+
+        .playerList:nth-of-type(odd) {
+            background: var(--secondary-bg);
+        }
+
+        .playerList img {
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .playerList img:hover {
+            background: rgba(14, 14, 14, 0.1);
+        }
+
+        .playerList input[type=checkbox] {
+            accent-color: var(--accent-color);
+            width: 20px;
+            height: 20px;
+        }
+
+        #PlayerMusicuploadLabel {
+            color: white;
+            background-color: transparent;
+            border-radius: 8px;
+            padding: 7.5px 10px;
+            font-size: 15px;
+            font-weight: bold;
+            border: 1px solid transparent;
+            transition: all 0.5s;
+            display: flex;
+            align-items: center;
+            gap: 7.5px;
+        }
+
+        #PlayerMusicuploadLabel:hover {
+            background-color: var(--secondary-bg);
+        }
+
+        .playerListInfo {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .playerToolbar {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            gap: 10px;
+            margin-bottom: 15px;
+            background: var(--primary-bg);
+            border-radius: 8px;
+            border: var(--primary-border);
+        }
+
+        .playerToolbar .toolbarCont {
+            display: flex;
+            gap: 7.5px;
+            align-items: center;
+        }
+
+        .playerToolbar .toolbarCont span {
+            font-size: 18px;
+            padding: 7.5px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .playerToolbar .toolbarCont span:hover {
+            background: var(--secondary-bg);
+        }
+
+        .playerToolbar .toolbarCont span:active {
+            background: rgba(241, 241, 241, 0.03);
+            border: var(--primary-border);
+        }
+
+        .track-art {
+            background: url('../Assets/Images/AppsIcons/Player.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 70px;
+            height: 70px;
+            margin: 15px;
+            transition: all 1s;
+            border: var(--primary-border);
+            border-radius: 10px;
+            transform: rotate(0deg);
+        }
+
+        .venylWheel-art {
+            border-radius: 50%;
+            transition: all 1s;
+            animation: venylWheel 2s linear infinite;
+        }
+
+        @keyframes venylWheel {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #playerMini #playerMiniExpandDD {
+            opacity: 0;
+            transition: all 0.3s;
+            padding: 2.5px;
+            backdrop-filter: blur(15px);
+            position: absolute;
+            top: 7.5px;
+            left: 7.5px;
+            background: var(--secondary-bg);
+            z-index: 2;
+            border-radius: 50%;
+            overflow: hidden;
+            border: var(--primary-border);
+        }
+
+        #playerMini:hover #playerMiniExpandDD {
+            opacity: 1;
+        }
+
+        #playerMini #playerMiniExpandDD:hover {
+            opacity: 1;
+            scale: 1.15;
+        }
+
+        #playerMini #playerMiniExpandDD:active {
+            opacity: 1;
+            scale: 1;
+        }
+
+        .footer {
+            font-size: 12px;
+
+        }
+
+        .playerNav {
+            width: 20%;
+            background: var(--secondary-bg);
+            overflow: hidden;
+            padding: 10px;
+            border-right: var(--primary-border);
+        }
+
+        .playerNav ul {
+            list-style: none;
+            padding: 5px;
+            height: calc(100% - 8.5rem);
+        }
+
+        .playerNav ul li {
+            border-radius: 6px;
+            border: 1px solid transparent;
+            padding: 10px 12.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .playerNav ul li span {
+            font-size: 20px;
+        }
+
+        .playerNav ul li:hover {
+            background-color: var(--secondary-bg);
+        }
+
+        .playerNav ul li:active {
+            border: var(--primary-border);
+        }
+
+        .playerNav li.active {
+            background-color: var(--secondary-bg);
+            border: var(--primary-border);
+        }
+
+        .playerNav li.active span {
+            color: var(--accent-color);
+        }
+
+        .playerMini {
+            left: 21%;
+            border-radius: 15px 15px 0px 0px;
+            margin-left: 10px;
+            height: 135px;
+            overflow: hidden;
+            width: calc(100% - 22.5%);
+            transition: all 0.3s;
+            position: fixed;
+            opacity: 1;
+            bottom: 0%;
+        }
+
+        .playerNavBtn {
+            position: fixed;
+            margin: 10px;
+            z-index: 999;
+            display: none;
+            background: var(--secondary-bg);
+        }
+
+        .playerNavBtnCLose {
+            display: none;
+        }
+
+        .playlist-contPlayer {
+            overflow: hidden;
+            height: calc(100% - 110px);
+            overflow-y: scroll;
+        }
+
+        .playlist-contPlayer::-webkit-scrollbar {
+            display: none;
+        }
+
+        .playerMain {
+            width: 78.5%;
+            height: calc(100% - 130px);
+            overflow: hidden;
+            transition: all 0.3s;
+            padding: 10px 15px;
+            padding-right: 0;
+        }
+
+        #seek_slider {
+            width: calc(100% - 20px);
+            margin: 5px;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+
+        #plyerMiniStats {
+            display: flex;
+            justify-content: space-between;
+            margin-left: 15px;
+            margin-right: 15px;
+            transition: all 0.3s;
+        }
+
+        #playerMiniControls {
+            float: right;
+            margin-top: -100px;
+            padding-right: 10px;
+            padding-top: 15px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        #playerMiniContent {
+            display: flex;
+            transition: all 0.3s;
+        }
+
+        #playerMiniContent #txtsPl {
+            margin-top: 22.5px;
+            transition: all 0.3s;
+        }
+
+        .playerMiniExpanded {
+            transition: all 0.3s;
+            height: calc(100% - 4.25rem);
+        }
+
+        .playerMiniExpanded #playerMiniContent {
+            display: grid;
+            justify-items: center;
+            position: absolute;
+            width: 100%;
+            transition: all 0.3s;
+            bottom: 15rem;
+        }
+
+        .playerMiniExpanded .track-art {
+            width: 200px;
+            height: 200px;
+            transition: all 0.3s;
+        }
+
+        .playerMiniExpanded #playerMiniContent #txtsPl {
+            text-align: center;
+            scale: 1.35;
+            transition: all 0.3s;
+        }
+
+        .playerMiniExpanded #playerMiniExpandDD {
+            transform: rotate(180deg);
+            transition: all 0.3s;
+            margin: 20px;
+        }
+
+        .playerMiniExpanded #seek_slider {
+            width: calc(100% - 100px);
+            margin-left: 50px;
+            transition: all 0.3s;
+            position: absolute;
+            bottom: 3rem;
+        }
+
+        .playerMiniExpanded #plyerMiniStats {
+            transition: all 0.3s;
+            margin-left: 50px;
+            margin-right: 0;
+            position: absolute;
+            bottom: 4.15rem;
+            width: calc(100% - 100px);
+        }
+
+        .playerMiniExpanded #playerMiniControls {
+            transition: all 0.3s;
+            position: absolute;
+            justify-content: center;
+            width: 100%;
+            bottom: 9rem;
+            transform: scale(1.3);
+        }
+
+        #PlayerHome,
+        #PlayerMusic,
+        #PlayerPlaylists {
+            display: none;
+        }
+
+        #PlayerHome.active,
+        #PlayerMusic.active,
+        #PlayerPlaylists.active {
+            display: block;
+        }
+
+        .playpause-track {
+            transition: all 0.3s;
+        }
+
+        .playpause-track:hover {
+            border: 1px solid transparent;
+            background: var(--secondary-bg);
+        }
+
+        .playpause-track:active {
+            border: var(--primary-border);
+        }
+
+        .playlistDock {
+            height: 125px;
+            width: 320px;
+            display: flex;
+            background-color: var(--secondary-bg);
+            padding: 10px;
+            border: 1px solid transparent;
+            padding-bottom: 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .playlistDock:hover {
+            background-color: #f1f1f124;
+        }
+
+        .playlistDock:active {
+            background-color: var(--secondary-bg);
+            border: var(--primary-border);
+        }
+
+        .playlistDock h2 {
+            font-size: 1rem;
+        }
+
+        .playlistDockCover {
+            border: var(--primary-border);
+            border-radius: 8px;
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .playlistContPage {
+            display: none;
+        }
+
+        #playlist1 .playlistDockCover {
+            background-image: url('Musics/AlbumArts/musicalMedicine.png');
+        }
+
+        @media screen and (max-width: 900px) {
+            .playerNav {
+                position: absolute;
+                left: -100%;
+                z-index: 999;
+                background-color: #221200;
+                transition: all 0.3s;
+                width: calc(100%);
+                border-radius: 0;
+                border: 0;
+                height: 100%;
+            }
+
+            .playerMini {
+                width: calc(100% - 20px);
+                left: 0;
+            }
+
+            .playerMain h1 {
+                margin-left: 50px;
+            }
+
+            .playerMain {
+                width: calc(100% - 10px);
+            }
+
+            .playerNavBtn {
+                display: block;
+            }
+
+            #playerMusicTitle {
+                width: 90%;
+            }
+
+            .prev-track,
+            .next-track {
+                display: none;
+            }
+
+            .playerNavBtnCLose {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="playerCont">
+        <button class="playerNavBtn" id="playerNavBtn"
+            onclick="document.getElementById('playerNav').style.left = '0%'; this.style.opacity = '0'"><span
+                class="material-symbols-rounded" style="transform: scaleX(1.15);">menu_open</span></button>
+        <div class="playerNav" id="playerNav">
+            <div style=" display: flex; align-items: center; gap: 5px;">
+                <input type="search" class="searchT"
+                    style=" padding: 16.5px; width: calc(100% - 10px); margin: 5px; margin-bottom: 7.5px;"
+                    placeholder="Search media">
+                <button class="playerNavBtnCLose"
+                    style="border-radius: 6px;background: var(--secondary-bg);height: fit-content;margin-right: 5px;"
+                    onclick="document.getElementById('playerNav').style.left = '-100%'; document.getElementById('playerNavBtn').style.opacity= '1'; this.style.opacity = '1'">
+                    <span class="material-symbols-rounded" style="font-size: 14px;">close</span>
+                </button>
+            </div>
+            <ul>
+                <li id="playerLiMus" class="active" onclick="
+                        document.getElementById('PlayerMusic').classList.add('active')
+                        document.getElementById('playerMini').classList.remove('playerMiniExpanded')
+                        document.querySelector('.playerMain').style.opacity = '1'
+                        document.getElementById('PlayerPlaylists').classList.remove('active')
+
+                        document.getElementById('playerLiPla').classList.remove('active')
+                        document.getElementById('playerLiMus').classList.add('active')">
+                    <span class="material-symbols-rounded">music_note</span>
+                    Music
+                </li>
+                <li id="playerLiPla" onclick="
+                        document.getElementById('PlayerMusic').classList.remove('active')
+                        document.querySelector('.playerMain').style.opacity = '1'
+                        document.getElementById('PlayerPlaylists').style.opacity = '1'
+                        document.getElementById('playerMini').classList.remove('playerMiniExpanded')
+                        document.getElementById('PlayerPlaylists').classList.add('active')
+
+                        document.getElementById('playerLiPla').classList.add('active')
+                        document.getElementById('playerLiMus').classList.remove('active')
+
+                        ">
+                    <span class="material-symbols-rounded">video_library</span>
+                    Playlists
+                </li>
+            </ul>
+            <p class="footer">Copyright © 2025 <a href="https://navaneet239.github.io" target="_blank">Navaneet
+                    Jaggannathan</a> • All Rights
+                Reserved
+            
+            <br><br>
+            The Music is subject to their respective copyright holders (Mentioned as Artist Name).</p>
+        </div>
+        <div class="playerMain">
+            <div class="playerMenu">
+
+                <div id="PlayerMusic" class="active">
+                    <h1 style="font-size: 36px;opacity: 0.5; margin-top: 5px; margin-bottom: 10px;">Music</h1>
+                    <!--<div class="playerToolbar">
+                        <input type="file" id="PlayerMusicupload" hidden="" accept="audio/*">
+                        for label ==> for="PlayerMusicupload"
+                    
+                        <label id="PlayerMusicuploadLabel" onclick="alert('Feature coming soon.')"><span
+                                class="material-symbols-rounded" style="font-size: 18px;">add_circle</span>
+                            Upload</label>
+                        <div class="devider-toolbar"
+                            style="position: static;height: 22.5px;opacity: 0.75; width: 1.5px;"></div>
+                        <div class="toolbarCont">
+                            <span class="material-symbols-rounded" id="tools"
+                                onclick="alert('Feature coming soon.')">edit</span>
+                            <span class="material-symbols-rounded" id="tools"
+                                onclick="alert('Feature coming soon.')">share</span>
+                            <span class="material-symbols-rounded" id="tools">delete</span>
+                            <span class="material-symbols-rounded" id="tools"
+                                onclick="alert('Feature coming soon.')">info</span>
+                        </div>
+                    </div>-->
+                    <div class="playlist-contPlayer">
+                        <div style="
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 0 20px;
+                            opacity: 0.75;
+                            border-bottom: 1px solid var(--secondary-bg);
+                            padding-bottom: 10px;
+                            ">
+                                    <p style="
+                                padding-left: 4rem;
+                            ">Name</p>
+                                    <p>Artist</p>
+                                    <p>Album</p>
+                        </div>
+                        <div class="playerList">
+                            <input type="checkbox" name="playlist1CB" id="playlist1CB" class="checkbox-item">
+                            <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png" width="28px"
+                                style="filter: invert(100%); cursor: pointer;" id="playerTrack1">
+                            <div class="playerListInfo">
+                                <h6 style="flex: 1;">Never Gonna Give You Up</h6>
+                                <h6 style="flex: 1;text-align: center;">Rick Astley</h6>
+                                <h6 style="flex: 1; text-align: right;">When You Need Somebody</h6>
+                            </div>
+                        </div>
+                        <div class="playerList">
+                            <input type="checkbox" name="playlist2CB" id="playlist2CB" class="checkbox-item">
+                            <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png" width="28px"
+                                style="filter: invert(100%); cursor: pointer;" id="playerTrack2">
+                            <div class="playerListInfo">
+                                <h6 style="flex: 1;">Moving On ✘ Alone</h6>
+                                <h6 style="flex: 1; text-align: center;">Musical Medicine</h6>
+                                <h6 style="flex: 1; text-align: right;">Musical Medicine's cover</h6>
+                            </div>
+                        </div>
+                        <div class="playerList">
+                            <input type="checkbox" name="playlist3CB" id="playlist3CB" class="checkbox-item">
+                            <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png" width="28px"
+                                style="filter: invert(100%); cursor: pointer;" id="playerTrack3">
+                            <div class="playerListInfo">
+                                <h6 style="flex: 1;">Cinematic ambience</h6>
+                                <h6 style="flex: 1;text-align: center;">Musical Medicine</h6>
+                                <h6 style="flex: 1; text-align: right;">Musical Medicine's cover</h6>
+                            </div>
+                        </div>
+                        <div class="playerList">
+                            <input type="checkbox" name="playlist4CB" id="playlist4CB" class="checkbox-item">
+                            <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png" width="28px"
+                                style="filter: invert(100%); cursor: pointer;" id="playerTrack4">
+                            <div class="playerListInfo">
+                                <h6 style="flex: 1;">Manike Mage Hithe - lo-fi</h6>
+                                <h6 style="flex: 1;text-align: center;">Musical Medicine</h6>
+                                <h6 style="flex: 1; text-align: right;">Musical Medicine's cover</h6>
+                            </div>
+                        </div>
+                        <div class="playerList">
+                            <input type="checkbox" name="playlist5CB" id="playlist5CB" class="checkbox-item">
+                            <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png" width="28px"
+                                style="filter: invert(100%); cursor: pointer;" id="playerTrack5">
+                            <div class="playerListInfo">
+                                <h6 style="flex: 1;">RETRO NOSTALGIA 🕹️!</h6>
+                                <h6 style="flex: 1;text-align: center;">Musical Medicine</h6>
+                                <h6 style="flex: 1; text-align: right;">Musical Medicine's cover</h6>
+                            </div>
+                        </div>
+                        <div class="playerList">
+                            <input type="checkbox" name="playlist6CB" id="playlist6CB" class="checkbox-item">
+                            <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png" width="28px"
+                                style="filter: invert(100%); cursor: pointer;" id="playerTrack6">
+                            <div class="playerListInfo">
+                                <h6 style="flex: 1;">Lily</h6>
+                                <h6 style="flex: 1;text-align: center;">Alan Walker</h6>
+                                <h6 style="flex: 1; text-align: right;">Different World</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <script src="https://cdn.jsdelivr.net/npm/idb@6.1.0/build/iife/index-min.js"></script>
+                    <script>
+                        function selectAllMed() {
+                            const checkboxes = document.querySelectorAll('.playlist-contPlayer .checkbox-item');
+                            checkboxes.forEach(function (checkbox) {
+                                checkbox.checked = true;
+                            });
+                        }
+                    </script>
+                </div>
+                <div id="PlayerPlaylists">
+                    <h1 style="font-size: 36px;opacity: 0.5; margin-top: -5px; margin-bottom: 5px;">Playlists</h1>
+                    <div style=" display: inline-table; margin-top: 10px;" id="playlistDock">
+                        <div class="playlistDock" id="playlist1"
+                            onclick="document.getElementById('playlistDock').style.display = 'none'; document.getElementById('musicalMedicine').style.display = 'block'">
+                            <div class="playlistDockCover"></div>
+                            <div>
+                                <h3 style="font-size: 18px;">Musical Medicine</h3>
+                                <p style="opacity: 0.65;">4 Songs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="playlist-contPlayer playlistContPage" id="musicalMedicine">
+                        <div class="button2" style="width: fit-content;"
+                            onclick="document.getElementById('playlistDock').style.display = 'inline-block'; document.getElementById('musicalMedicine').style.display = 'none'">
+                            <span class="material-symbols-rounded">chevron_left</span>
+                        </div>
+                        <div class="playerList">
+                            <input type="checkbox" name="playlist2CB" id="playlist2CB" class="checkbox-item">
+                            <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png" width="28px"
+                                style="filter: invert(100%); cursor: pointer;" id="playerTrack2P">
+                            <div class="playerListInfo">
+                                <h6 style="flex: 1;">Moving On ✘ Alone</h6>
+                                <h6 style="flex: 1; text-align: center;">Musical Medicine</h6>
+                                <h6 style="flex: 1; text-align: right;">Musical Medicine's cover</h6>
+                            </div>
+                        </div>
+                        <div class="playerList">
+                            <input type="checkbox" name="playlist3CB" id="playlist3CB" class="checkbox-item">
+                            <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png" width="28px"
+                                style="filter: invert(100%); cursor: pointer;" id="playerTrack3P">
+                            <div class="playerListInfo">
+                                <h6 style="flex: 1;">Cinematic ambience</h6>
+                                <h6 style="flex: 1;text-align: center;">Musical Medicine</h6>
+                                <h6 style="flex: 1; text-align: right;">Musical Medicine's cover</h6>
+                            </div>
+                        </div>
+                        <div class="playerList">
+                            <input type="checkbox" name="playlist4CB" id="playlist4CB" class="checkbox-item">
+                            <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png" width="28px"
+                                style="filter: invert(100%); cursor: pointer;" id="playerTrack4P">
+                            <div class="playerListInfo">
+                                <h6 style="flex: 1;">Manike Mage Hithe - lo-fi</h6>
+                                <h6 style="flex: 1;text-align: center;">Musical Medicine</h6>
+                                <h6 style="flex: 1; text-align: right;">Musical Medicine's cover</h6>
+                            </div>
+                        </div>
+                        <div class="playerList">
+                            <input type="checkbox" name="playlist5CB" id="playlist5CB" class="checkbox-item">
+                            <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png" width="28px"
+                                style="filter: invert(100%); cursor: pointer;" id="playerTrack5P">
+                            <div class="playerListInfo">
+                                <h6 style="flex: 1;">RETRO NOSTALGIA 🕹️!</h6>
+                                <h6 style="flex: 1;text-align: center;">Musical Medicine</h6>
+                                <h6 style="flex: 1; text-align: right;">Musical Medicine's cover</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="playerMini" id="playerMini">
+            <div id="playerMiniExpandDD">
+                <span class="material-symbols-rounded">expand_less</span>
+            </div>
+            <div id="playerMiniContent">
+                <div class="track-art"></div>
+                <div id="txtsPl">
+                    <h4 id="playerMusicTitle">Media name</h4>
+                    <p style="opacity: 0.75;" id="playerMusicAuthor">Artist name</p>
+                </div>
+            </div>
+            <div id="playerMiniControls">
+                <div style="padding: 10px; padding-bottom: 0; padding-right: 0;">
+                    <button class="prev-track" onclick="prevTrack()"
+                        style="border: 1px solid transparent; background: transparent;">
+                        <img src="https://img.icons8.com/fluency-systems-regular/344/skip-to-start.png"
+                            style="width: 21px; filter: invert(1);">
+                    </button>
+                    <button class="playpause-track" onclick="playpauseTrack()">
+                        <img src="https://img.icons8.com/fluency-systems-regular/452/play--v1.png"
+                            style="width: 25px;filter: invert(1);" class="playpause-trackImg">
+                    </button>
+                    <button class="next-track" onclick="nextTrack()"
+                        style=" background: transparent; border: 1px solid transparent;">
+                        <img src="https://img.icons8.com/fluency-systems-regular/344/end--v1.png"
+                            style="width: 21px; filter: invert(1);">
+                    </button>
+                </div>
+            </div>
+            <div id="plyerMiniStats">
+                <div class="current-time" style="margin-bottom: 5px;margin-top: -10px;font-size: 13px;">00:00</div>
+                <div class="total-duration" style="margin-top: -12.5px;font-size: 13px;">00:00</div>
+            </div>
+            <input type="range" id="seek_slider" class="slider" value="0" onchange="seekTo()">
+        </div>
+    </div>
+
+    <script src="Musics/music.js"></script>
+</body>
+
+</html>
